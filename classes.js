@@ -26,8 +26,8 @@ const Fragment = (x,y,s,f,st,mV,g) => {
 const Gravitor = (x,y) => {
 	let self = {
 		location: createVector(x,y),
-		size: 10,
-		maxDistance: 120,
+		size: 5,
+		maxDistance: 100,
 		minDistance: 5
 	}
 
@@ -37,3 +37,6 @@ const Gravitor = (x,y) => {
 	);
 
 }
+	// development continues here!!!
+	// 2. distance from the gravitor should interfer in the gravity force. As they get closer, gravity is stronger
+	// 3. eyes may be dark and get brighter as they are hit by fragments

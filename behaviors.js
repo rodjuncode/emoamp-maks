@@ -1,3 +1,23 @@
+// # functions
+function shuffleArray(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}
+
 // # behaviors
 
 // basic stuff
@@ -21,10 +41,12 @@ const WillReact = (self) => ({
 const WillOrbit = (self) => ({
 	orbit: () => {
 		if (self.gravitors != null) {
+			shuffleArray(self.gravitors);
 			for (var i = 0; i < self.gravitors.length; i++) {
 				if (p5.Vector.dist(self.location, self.gravitors[i].location) < self.gravitors[i].maxDistance) {
-					var steering = p5.Vector.sub(self.gravitors[i].location,self.location).normalize().mult(1.2);
+					var steering = p5.Vector.sub(self.gravitors[i].location,self.location).normalize();
 					self.acceleration.add(steering);
+					break;
 				}
 			}
 		}
@@ -37,9 +59,19 @@ const WillDisintegrate = (self) => ({
 			for (var i = 0; i < self.gravitors.length; i++) {
 				if (p5.Vector.dist(self.location, self.gravitors[i].location) < self.gravitors[i].minDistance) {
 					self.desintegrate = true;
+					//self.gravitors[i].heat();
 				}
 			}
 		}
+	}
+});
+
+const WillGlow = (self) => ({
+	cool: () => {
+
+	},
+	heat: () => {
+
 	}
 });
 
@@ -167,9 +199,11 @@ const Ellipse = (self, c) => ({
 const Rectangle = (self) => ({
 	show: () => {
 		push();
+		// noFill();
 		if (self.fill != null) {
 			fill(self.fill);
 		} 
+		// noStroke();
 		if (self.stroke != null) {
 			stroke(self.stroke);
 		} 
