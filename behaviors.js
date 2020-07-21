@@ -59,7 +59,7 @@ const WillDisintegrate = (self) => ({
 			for (var i = 0; i < self.gravitors.length; i++) {
 				if (p5.Vector.dist(self.location, self.gravitors[i].location) < self.gravitors[i].minDistance) {
 					self.desintegrate = true;
-					//self.gravitors[i].heat();
+					self.gravitors[i].heat();
 				}
 			}
 		}
@@ -68,10 +68,13 @@ const WillDisintegrate = (self) => ({
 
 const WillGlow = (self) => ({
 	cool: () => {
-
+		self.temperature -= 5;
+		if (self.temperature < 0) {
+			self.temperature = 0;
+		}
 	},
 	heat: () => {
-
+		self.temperature += 50;	
 	}
 });
 
@@ -201,7 +204,8 @@ const Rectangle = (self) => ({
 		push();
 		// noFill();
 		if (self.fill != null) {
-			fill(self.fill);
+			var h = constrain(255-self.temperature,0,255);
+			fill(color(255,h,h));
 		} 
 		// noStroke();
 		if (self.stroke != null) {

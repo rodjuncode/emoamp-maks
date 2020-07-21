@@ -1,7 +1,7 @@
 let cam;
 
 let fragments = [];
-const maxFrags = 1000;
+const maxFrags = 100;
 const maxVelocity = 10;
 const fragSize = 4;
 const fragFill = 220;
@@ -10,12 +10,13 @@ const fragStroke = 0;
 var leftEye;
 var rightEye;
 var eyes;
+var gravitors;
 
 let poseNet;
 let pose;
 
 var voice;
-const volThreshold = 0.003;
+const volThreshold = 0.1;
 
 function setup() {
     createCanvas(600,360);
@@ -43,9 +44,15 @@ function draw() {
 //    image(cam,0,0);
 
     if (pose) {
-        eyes.gravs[0] = Gravitor(pose.leftEye.x,pose.leftEye.y);
-        eyes.gravs[1] = Gravitor(pose.rightEye.x,pose.rightEye.y);
+        eyes.gravs[0].location.x = pose.leftEye.x;
+        eyes.gravs[0].location.y = pose.leftEye.y;
+        eyes.gravs[1].location.x = pose.rightEye.x;
+        eyes.gravs[1].location.y = pose.rightEye.y;
+
+        // eyes.gravs[0] = Gravitor(pose.leftEye.x,pose.leftEye.y);
+        // eyes.gravs[1] = Gravitor(pose.rightEye.x,pose.rightEye.y);
     } 
+
 
     var vol = voice.getLevel();
 
@@ -57,6 +64,7 @@ function draw() {
         let newF = Fragment(fragX,fragY,fragSize,color(fragFill),color(fragStroke),maxVelocity,eyes.gravs); // code better
         newF.reactTo(createVector(random(-10,10),10));
         fragments.push(newF);
+        
     }
 
     for (f of fragments) {
@@ -72,11 +80,16 @@ function draw() {
         if (fragments[i].desintegrate) {
             fragments.splice(i,1);
         }
-
     }
 
-    eyes.gravs[0].show();
-    eyes.gravs[1].show();
+    for (g of eyes.gravs) {
+        g.cool();
+        g.show();
+        console.log(g.temperature); 
+    }
+
+    // eyes.gravs[0].show();
+    // eyes.gravs[1].show();
 
 
 }
@@ -88,3 +101,7 @@ function gotPoses(poses) {
 } 
 
 
+// development continues here!!!
+// - not every draw produces fragments (frameCount % 4)
+// - halo
+// - both eyes heat together
