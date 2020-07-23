@@ -34,7 +34,7 @@ const Gravitor = (x,y) => {
 
 	return Object.assign(
 		self,
-		Rectangle(self),
+		Eye(self),
 		WillGlow(self),
 	);
 

@@ -6,6 +6,7 @@ const maxVelocity = 10;
 const fragSize = 4;
 const fragFill = 220;
 const fragStroke = 0;
+const fragGenerateInterval = 1;
 
 var leftEye;
 var rightEye;
@@ -14,6 +15,8 @@ var gravitors;
 
 let poseNet;
 let pose;
+
+var drawCount = 0;
 
 var voice;
 const volThreshold = 0.1;
@@ -57,14 +60,14 @@ function draw() {
     var vol = voice.getLevel();
 
     if (fragments.length < maxFrags 
-            && vol > volThreshold) {
+            && vol > volThreshold
+            && drawCount % fragGenerateInterval == 0) {
         let middleEye = (pose.leftEye.x - pose.rightEye.x)/2;
         let fragX = pose.rightEye.x + middleEye;
         let fragY = pose.nose.y + middleEye;
         let newF = Fragment(fragX,fragY,fragSize,color(fragFill),color(fragStroke),maxVelocity,eyes.gravs); // code better
         newF.reactTo(createVector(random(-10,10),10));
         fragments.push(newF);
-        
     }
 
     for (f of fragments) {
@@ -85,12 +88,12 @@ function draw() {
     for (g of eyes.gravs) {
         g.cool();
         g.show();
-        console.log(g.temperature); 
     }
 
     // eyes.gravs[0].show();
     // eyes.gravs[1].show();
 
+    drawCount++;
 
 }
 
@@ -102,6 +105,4 @@ function gotPoses(poses) {
 
 
 // development continues here!!!
-// - not every draw produces fragments (frameCount % 4)
 // - halo
-// - both eyes heat together

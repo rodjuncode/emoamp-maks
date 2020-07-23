@@ -59,6 +59,11 @@ const WillDisintegrate = (self) => ({
 			for (var i = 0; i < self.gravitors.length; i++) {
 				if (p5.Vector.dist(self.location, self.gravitors[i].location) < self.gravitors[i].minDistance) {
 					self.desintegrate = true;
+					//self.gravitors[i].heat();
+				}
+			}
+			if (self.desintegrate) {
+				for (var i = 0; i < self.gravitors.length; i++) {
 					self.gravitors[i].heat();
 				}
 			}
@@ -204,7 +209,7 @@ const Rectangle = (self) => ({
 		push();
 		// noFill();
 		if (self.fill != null) {
-			var h = constrain(255-self.temperature,0,255);
+			var h = constrain(255-self.temperature,0,200);
 			fill(color(255,h,h));
 		} 
 		// noStroke();
@@ -213,6 +218,30 @@ const Rectangle = (self) => ({
 		} 
 		rectMode(CENTER);
 		rect(self.location.x, self.location.y, self.size, self.size)
+		pop();
+	}
+});
+
+const Eye = (self) => ({
+	show: () => {
+		push();
+		noStroke();
+		rectMode(CENTER);
+
+	
+		var h = constrain(255-self.temperature,0,200);
+		//fill(color(255,h,h,alpha));
+
+		var halo = 20;
+		var alpha = 100;
+
+		for (var i = 1; i <= halo; i++) {
+			fill(color(255,h,h,i*(100/halo)));
+			rect(self.location.x, self.location.y, self.size + halo - i, self.size + halo - i)
+		}
+		
+		
+		//rect(self.location.x, self.location.y, self.size, self.size)
 		pop();
 	}
 });
