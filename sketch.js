@@ -1,9 +1,9 @@
 let cam;
 
-let fragments = [];
-const maxFrags = 100;
+var fragments = [];
+const maxFrags = 50;
 const maxVelocity = 10;
-const fragSize = 4;
+const fragSize = 3;
 const fragFill = 220;
 const fragStroke = 0;
 const fragGenerateInterval = 1;
@@ -22,7 +22,7 @@ var voice;
 const volThreshold = 0.1;
 
 function setup() {
-    createCanvas(600,360);
+    createCanvas(600,360,WEBGL);
     gravity = createVector(0,1);
 
 	cam = createCapture(VIDEO);
@@ -42,7 +42,8 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(0,0,0,250);
+    translate(-width/2,-height/2);
 
 //    image(cam,0,0);
 

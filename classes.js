@@ -9,13 +9,14 @@ const Fragment = (x,y,s,f,st,mV,g) => {
 		stroke: st,
 		maxVelocity: mV,
 		gravitors: g,
-		desintegrate: false
+		desintegrate: false,
+		halo: 10
 	}
 
 	return Object.assign(
 		self,
 		Particle(self),
-		Ellipse(self),
+		Glow(self),
 		WillBounceOnEdges(self,0,width,0,height,-10000,10000), // z-axys has big boundaries
 		WillOrbit(self),
 		WillDisintegrate(self)
@@ -27,15 +28,15 @@ const Gravitor = (x,y) => {
 		location: createVector(x,y),
 		size: 5,
 		maxDistance: 100,
-		minDistance: 5,
-		fill: color(255,255,255),
+		minDistance: 20,
 		temperature: 0,
+		halo: 30
 	}
 
 	return Object.assign(
 		self,
-		Eye(self),
-		WillGlow(self),
+		Glow(self),
+		WillHeat(self),
 	);
 
 }

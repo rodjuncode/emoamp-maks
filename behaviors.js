@@ -50,7 +50,11 @@ const WillOrbit = (self) => ({
 				}
 			}
 		}
+	},
+	color: () => {
+		return self.fill;		
 	}
+	
 });
 
 const WillDisintegrate = (self) => ({
@@ -71,15 +75,19 @@ const WillDisintegrate = (self) => ({
 	}
 });
 
-const WillGlow = (self) => ({
+const WillHeat = (self) => ({
 	cool: () => {
-		self.temperature -= 5;
+		self.temperature -= 2;
 		if (self.temperature < 0) {
 			self.temperature = 0;
 		}
 	},
 	heat: () => {
-		self.temperature += 50;	
+		self.temperature = constrain(self.temperature + 35, 0, 500);	
+	},
+	color: () => {
+		var h = constrain(255-self.temperature,0,200);
+		return color(255,h,h,4);
 	}
 });
 
@@ -222,26 +230,17 @@ const Rectangle = (self) => ({
 	}
 });
 
-const Eye = (self) => ({
+const Glow = (self) => ({
 	show: () => {
 		push();
 		noStroke();
-		rectMode(CENTER);
-
-	
-		var h = constrain(255-self.temperature,0,200);
-		//fill(color(255,h,h,alpha));
-
-		var halo = 20;
-		var alpha = 100;
-
-		for (var i = 1; i <= halo; i++) {
-			fill(color(255,h,h,i*(100/halo)));
-			rect(self.location.x, self.location.y, self.size + halo - i, self.size + halo - i)
+		ellipseMode(CENTER);
+		fill(red(self.color()), green(self.color()), blue(self.color()),5);		
+		for (var i = 0; i <= self.halo; i++) {
+			ellipse(self.location.x, self.location.y, self.size + self.halo - i, self.size + self.halo - i)
 		}
-		
-		
-		//rect(self.location.x, self.location.y, self.size, self.size)
+		fill(red(self.color()), green(self.color()), blue(self.color()),150);		
+		ellipse(self.location.x, self.location.y, self.size, self.size)
 		pop();
 	}
 });
